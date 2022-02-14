@@ -7,8 +7,15 @@ class MainPresenter @Inject constructor(
     private val view: MainContract.View,
     private val getProductsUseCase: GetProductsUseCase)
     : MainContract.Presenter {
+
     override fun onViewCreated() {
-        TODO("Not yet implemented")
+
+        fetchPurchases()
     }
+
+    override fun fetchPurchases() {
+        view.showProducts(getProductsUseCase())
+    }
+
 
 }
