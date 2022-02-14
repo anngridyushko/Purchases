@@ -1,33 +1,34 @@
-package com.gridyushko.purchases.ui.activity
+package com.gridyushko.purchases.ui.adapters
 
-import android.content.Context
-import android.graphics.Bitmap
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import com.gridyushko.purchases.databinding.PurchaseItemBinding
 import com.gridyushko.purchases.domain.entities.Product
 import com.gridyushko.purchases.ui.GlideApp
 import javax.inject.Inject
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.gridyushko.purchases.ui.listeners.OnItemClickListener
 
 
+class MainAdapter constructor(private val clickListener: OnItemClickListener) : ListAdapter<Product, MainAdapter.ItemViewHolder>(
+    DiffCallback
+) {
 
-
-class MainAdapter @Inject constructor() : ListAdapter<Any, MainAdapter.ItemViewHolder>(DiffCallback) {
-
-    @Inject
-    lateinit var storage: StorageReference
+    var storage = Firebase
+        .storage("gs://com-gridyushko-purchases.appspot.com/")
+        .reference
 
     abstract class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun bind(item: Any)
+        abstract fun bind(item: Product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -40,13 +41,17 @@ class MainAdapter @Inject constructor() : ListAdapter<Any, MainAdapter.ItemViewH
         val viewHolder = holder as MainViewHolder
         viewHolder.bind(getItem(position))
 
+        holder.itemView.setOnClickListener {
+            clickListener.onClick(getItem(position))
+        }
+
     }
 
     inner class MainViewHolder(
         private val binding: PurchaseItemBinding
     ) : ItemViewHolder(binding.root) {
 
-        override fun bind(item: Any) {
+        override fun bind(item: Product) {
             val product = item as Product
             val storageReference = storage.child(product.key.toString())
 
@@ -54,11 +59,11 @@ class MainAdapter @Inject constructor() : ListAdapter<Any, MainAdapter.ItemViewH
                 productName.text = product.name
                 productPrice.text = product.price.toString()
             }
-            storageReference.downloadUrl.addOnSuccessListener(OnSuccessListener<Any?> {
+            storageReference.downloadUrl.addOnSuccessListener {
                 GlideApp.with(binding.productPhoto)
                     .load(it)
                     .into(binding.productPhoto)
-            })
+            }
 
         }
     }
@@ -66,19 +71,13 @@ class MainAdapter @Inject constructor() : ListAdapter<Any, MainAdapter.ItemViewH
 
     companion object {
 
-        object DiffCallback : DiffUtil.ItemCallback<Any>() {
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                if (oldItem is Product && newItem is Product)
-                    return oldItem.name == newItem.name
-                return false
+        object DiffCallback : DiffUtil.ItemCallback<Product>() {
+            override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+                return oldItem.name == newItem.name
             }
 
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return if (oldItem is String && newItem is String)
-                    oldItem.hashCode() == newItem.hashCode()
-                else if (oldItem is Product && newItem is Product)
-                    oldItem.hashCode() == newItem.hashCode()
-                else false
+            override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
             }
         }
     }

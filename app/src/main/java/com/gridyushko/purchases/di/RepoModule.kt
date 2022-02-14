@@ -15,5 +15,5 @@ object RepoModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(db: ProductsDB): ProductsRepository = ProductsRepositoryImpl(db)
+    fun provideRepository(db: ProductsDB): ProductsRepository = ProductsRepositoryImpl(db)
 }

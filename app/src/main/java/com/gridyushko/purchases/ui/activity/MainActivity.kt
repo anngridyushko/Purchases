@@ -3,34 +3,38 @@ package com.gridyushko.purchases.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.gridyushko.purchases.domain.entities.Product
-import com.gridyushko.purchases.R
+
 import com.gridyushko.purchases.databinding.ActivityMainBinding
+import com.gridyushko.purchases.domain.entities.Product
+import com.gridyushko.purchases.ui.adapters.MainAdapter
+import com.gridyushko.purchases.ui.listeners.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.gridyushko.purchases.R
+import com.gridyushko.purchases.ui.details.DetailsFragment
+
+
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListener{
 
     private val binding: ActivityMainBinding by viewBinding()
 
     @Inject
     lateinit var presenter: MainContract.Presenter
 
-    @Inject
-    lateinit var mainAdapter: MainAdapter
+    var mainAdapter = MainAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.onViewCreated()
+
     }
 
     override fun setupAdapter() {
@@ -40,7 +44,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    override fun showProducts(products: List<Any>) {
+    override fun showProducts(products: List<Product>) {
         mainAdapter.submitList(products)
         binding.recyclerView.isVisible = true
         Log.i("productslog", products.toString())
@@ -60,5 +64,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun hideError() {
         TODO("Not yet implemented")
+    }
+
+    override fun onClick(s: Product) {
+        binding.recyclerView.isVisible = false
+        val transaction = supportFragmentManager.beginTransaction();
+            transaction.add(
+                R.id.layout,
+                DetailsFragment()
+            )
+            .commit()
     }
 }
