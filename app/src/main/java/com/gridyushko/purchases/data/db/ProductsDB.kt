@@ -24,9 +24,9 @@ class ProductsDB @Inject constructor() {
         var product: MutableList<Product> = arrayListOf()
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (postSnapshot in snapshot.children) {
-                    val prod: Product? = postSnapshot.child("Products").getValue(Product::class.java)
-                    product.add(prod!!)
+                product.clear()
+                for (postSnapshot in snapshot.child("Products").children) {
+                    product.add(postSnapshot.getValue(Product::class.java)!!)
                 }
             }
 
@@ -34,6 +34,8 @@ class ProductsDB @Inject constructor() {
                 System.out.println("The read failed: " + databaseError.getMessage())
             }
         })
-        return product
+
+        return product.toList()
     }
+
 }
