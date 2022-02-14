@@ -15,6 +15,7 @@ class MainPresenter @Inject constructor(
     : MainContract.Presenter {
 
     override fun onViewCreated() {
+        view.setupAdapter()
         fetchPurchases()
     }
 
