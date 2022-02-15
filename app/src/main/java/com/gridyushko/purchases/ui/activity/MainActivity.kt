@@ -14,8 +14,6 @@ import com.gridyushko.purchases.ui.listeners.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.gridyushko.purchases.R
 import com.gridyushko.purchases.ui.details.DetailsFragment
 
@@ -50,21 +48,6 @@ class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListene
         Log.i("productslog", products.toString())
     }
 
-    override fun showProgressBar() {
-        TODO("Not yet implemented")
-    }
-
-    override fun hideProgressBar() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showError() {
-        TODO("Not yet implemented")
-    }
-
-    override fun hideError() {
-        TODO("Not yet implemented")
-    }
 
     override fun onClick(product: Product) {
         binding.recyclerView.isVisible = false

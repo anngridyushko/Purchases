@@ -5,11 +5,7 @@ import com.gridyushko.purchases.domain.entities.Product
 class MainContract {
     interface View {
         fun setupAdapter()
-        fun showProducts(list: List<Product>)
-        fun showProgressBar()
-        fun hideProgressBar()
-        fun showError()
-        fun hideError()
+        fun showProducts(products: List<Product>)
     }
 
     interface Presenter{
