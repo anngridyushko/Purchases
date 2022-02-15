@@ -1,8 +1,10 @@
 package com.gridyushko.purchases.ui.details
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.ktx.Firebase
@@ -27,6 +29,27 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
         super.onCreate(savedInstanceState)
         product = arguments?.getParcelable<Product>("product")!!
         Log.i("DetailsFragment", "Created")
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true)
+            {
+                override fun handleOnBackPressed() {
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.remove(
+                        this@DetailsFragment
+                    )
+                        .commit()
+                    parentFragmentManager.popBackStack();
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            callback
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,4 +81,8 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
                 .commit()
         }
     }
+
+
+
+
 }

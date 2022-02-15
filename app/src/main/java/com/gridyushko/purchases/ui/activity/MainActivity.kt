@@ -80,4 +80,16 @@ class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListene
             )
             .commit()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val count = supportFragmentManager.backStackEntryCount
+
+        if (count == 0) {
+            super.onBackPressed()
+            binding.recyclerView.isVisible = true
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+    }
 }
