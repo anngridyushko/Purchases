@@ -1,20 +1,11 @@
 package com.gridyushko.purchases.data.db
 
-import android.content.Context
-import android.util.Log
 import com.google.firebase.database.DatabaseReference
 import com.gridyushko.purchases.domain.entities.Product
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 import com.google.firebase.database.DatabaseError
-
 import com.google.firebase.database.DataSnapshot
-
 import com.google.firebase.database.ValueEventListener
-
-
-
-
 class ProductsDB @Inject constructor() {
 
     @Inject

@@ -66,12 +66,17 @@ class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListene
         TODO("Not yet implemented")
     }
 
-    override fun onClick(s: Product) {
+    override fun onClick(product: Product) {
         binding.recyclerView.isVisible = false
+        val bundle = Bundle()
+        bundle.putParcelable("product", product)
+        val fragment = DetailsFragment()
+        fragment.arguments = bundle
+
         val transaction = supportFragmentManager.beginTransaction();
             transaction.add(
                 R.id.layout,
-                DetailsFragment()
+                fragment
             )
             .commit()
     }
