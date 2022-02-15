@@ -43,7 +43,7 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
                         this@DetailsFragment
                     )
                         .commit()
-                    parentFragmentManager.popBackStack();
+                    parentFragmentManager.popBackStack()
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -67,7 +67,7 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
                 .into(binding.detailsPhoto)
         }
 
-        binding.BUY.setOnClickListener {
+        binding.buyBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable("product", product)
             val fragment = BuyFragment()
