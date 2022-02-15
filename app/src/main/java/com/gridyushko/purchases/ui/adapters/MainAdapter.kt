@@ -4,16 +4,12 @@ package com.gridyushko.purchases.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.storage.StorageReference
 import com.gridyushko.purchases.databinding.PurchaseItemBinding
 import com.gridyushko.purchases.domain.entities.Product
 import com.gridyushko.purchases.ui.GlideApp
-import javax.inject.Inject
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.gridyushko.purchases.ui.listeners.OnItemClickListener
@@ -57,7 +53,7 @@ class MainAdapter constructor(private val clickListener: OnItemClickListener) : 
 
             with(binding) {
                 productName.text = product.name
-                productPrice.text = product.price.toString()
+                productPrice.text = "${product.price} $"
             }
             storageReference.downloadUrl.addOnSuccessListener {
                 GlideApp.with(binding.productPhoto)

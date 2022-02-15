@@ -2,4 +2,10 @@
     <string name="app_name">My Application</string>
     <string name="product">Product</string>
     <string name="price">Price</string>
+    <string name="your_purchase">Your purchase</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_phone">Enter your phone</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="checkout">Checkout</string>
+    <string name="product_price">"%.2f $"</string>
 </resources>
