@@ -1,5 +1,6 @@
 package com.gridyushko.purchases.ui.activity
 
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -35,7 +36,7 @@ class MainPresenter @Inject constructor(
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage())
+                Log.i("getdata","The read failed: " + databaseError.message)
             }
         })
     }

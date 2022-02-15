@@ -28,7 +28,10 @@ class MainAdapter constructor(private val clickListener: OnItemClickListener) : 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = PurchaseItemBinding.inflate(layoutInflater, parent, false)
+        val binding = PurchaseItemBinding.inflate(
+            layoutInflater,
+            parent,
+            false)
         return MainViewHolder(binding)
     }
 

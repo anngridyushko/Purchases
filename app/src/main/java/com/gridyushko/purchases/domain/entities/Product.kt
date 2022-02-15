@@ -1,6 +1,5 @@
 package com.gridyushko.purchases.domain.entities
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
