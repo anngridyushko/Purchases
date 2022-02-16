@@ -6,17 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
 import com.gridyushko.purchases.databinding.PurchaseItemBinding
 import com.gridyushko.purchases.domain.entities.Product
 import com.gridyushko.purchases.ui.GlideApp
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.gridyushko.purchases.ui.listeners.OnItemClickListener
+import javax.inject.Inject
 
-
-class MainAdapter constructor(private val clickListener: OnItemClickListener) : ListAdapter<Product, MainAdapter.ItemViewHolder>(
+class MainAdapter: ListAdapter<Product, MainAdapter.ItemViewHolder>(
     DiffCallback
 ) {
+
+    private var onItemClickListener: ((Product) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Product) -> Unit) {
+        onItemClickListener = listener
+    }
 
     var storage = Firebase
         .storage("gs://com-gridyushko-purchases.appspot.com/")
@@ -40,7 +48,9 @@ class MainAdapter constructor(private val clickListener: OnItemClickListener) : 
         viewHolder.bind(getItem(position))
 
         holder.itemView.setOnClickListener {
-            clickListener.onClick(getItem(position))
+            onItemClickListener?.let {
+                it(getItem((position)))
+            }
         }
 
     }

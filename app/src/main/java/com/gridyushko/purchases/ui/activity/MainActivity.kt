@@ -19,18 +19,34 @@ import com.gridyushko.purchases.ui.details.DetailsFragment
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListener{
+class MainActivity : AppCompatActivity(), MainContract.View{
 
     private val binding: ActivityMainBinding by viewBinding()
 
     @Inject
     lateinit var presenter: MainContract.Presenter
 
-    var mainAdapter = MainAdapter(this)
+    @Inject
+    lateinit var mainAdapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainAdapter.setOnItemClickListener {
+            binding.recyclerView.isVisible = false
+            val bundle = Bundle()
+            bundle.putParcelable("product", it)
+            val fragment = DetailsFragment()
+            fragment.arguments = bundle
+
+            val transaction = supportFragmentManager.beginTransaction();
+            transaction.add(
+                R.id.layout,
+                fragment
+            )
+                .commit()
+        }
         presenter.onViewCreated()
 
     }
@@ -46,22 +62,6 @@ class MainActivity : AppCompatActivity(), MainContract.View , OnItemClickListene
         mainAdapter.submitList(products)
         binding.recyclerView.isVisible = true
         Log.i("productslog", products.toString())
-    }
-
-
-    override fun onClick(product: Product) {
-        binding.recyclerView.isVisible = false
-        val bundle = Bundle()
-        bundle.putParcelable("product", product)
-        val fragment = DetailsFragment()
-        fragment.arguments = bundle
-
-        val transaction = supportFragmentManager.beginTransaction();
-            transaction.add(
-                R.id.layout,
-                fragment
-            )
-            .commit()
     }
 
     override fun onBackPressed() {

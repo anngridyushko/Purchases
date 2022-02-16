@@ -7,23 +7,27 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.gridyushko.purchases.R
 import com.gridyushko.purchases.databinding.DetailsFragmentBinding
 import com.gridyushko.purchases.domain.entities.Product
 import com.gridyushko.purchases.ui.GlideApp
 import com.gridyushko.purchases.ui.buy.BuyFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailsFragment: Fragment(R.layout.details_fragment) {
 
     private val binding: DetailsFragmentBinding by viewBinding()
 
     private lateinit var product: Product
 
-    var storage = Firebase
-        .storage("gs://com-gridyushko-purchases.appspot.com/")
-        .reference
+    @Inject
+    lateinit var storage: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
